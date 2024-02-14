@@ -1,100 +1,40 @@
-import React, { useState, useRef } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Camera } from "expo-camera";
-import { MaterialIcons } from "@expo/vector-icons"; // Import MaterialIcons from expo-vector-icons
-import * as FileSystem from "expo-file-system";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from expo-vector-icons
+import HomeScreen from "./HomeScreen";
+import CaptureScreen from "./CaptureScreen";
+import ProfileScreen from "./ProfileScreen";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const cameraRef = useRef(null);
-
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
-      </View>
-    );
-  }
-
-  async function handleCapture() {
-    if (cameraRef.current) {
-      let photo = await cameraRef.current.takePictureAsync();
-      console.log(photo);
-      // Do something with the captured photo
-    }
-  }
-
-  function toggleCameraType() {
-    setType(
-      type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={cameraRef}></Camera>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-          <Text>
-            <MaterialIcons name="sync" size={32} color="white" />{" "}
-            {/* Wrap MaterialIcons in a Text component */}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.captureButton} onPress={handleCapture}>
-          <View style={styles.captureInnerButton}></View>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Home") {
+              iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Capture") {
+              iconName = focused ? "camera" : "camera-outline";
+            } else if (route.name === "Profile") {
+              iconName = focused ? "person" : "person-outline";
+            }
+
+            // Return the icon component
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Capture" component={CaptureScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "black", // Set background color to black
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around", // Align buttons in the middle
-    marginVertical: 20,
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  captureButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: "red", // Set background color to red
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  captureInnerButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    borderWidth: 2,
-    borderColor: "white", // Set border color to white
-    backgroundColor: "transparent",
-  },
-});
