@@ -10,13 +10,15 @@ export default function CaptureScreen() {
   const cameraRef = useRef(null);
   const isFocused = useIsFocused();
 
-  useEffect(() => {
+  const setup = () => {
     (async () => {
       if (cameraRef.current && permission && permission.granted && isFocused) {
         await cameraRef.current.resumePreview();
       }
     })();
-  }, [permission, isFocused]);
+  };
+  const dependencies = [permission, isFocused];
+  useEffect(setup, dependencies);
 
   if (!permission) {
     return <View />;
