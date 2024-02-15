@@ -4,6 +4,7 @@ import { Camera } from "expo-camera";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import * as Location from "expo-location";
+import { manipulateAsync } from "expo-image-manipulator";
 
 export default function CaptureScreen() {
   const [type, setType] = useState(Camera.Constants.Type.front);
@@ -45,6 +46,14 @@ export default function CaptureScreen() {
       let photo = await cameraRef.current.takePictureAsync();
       console.log(photo);
       // Do something with the captured photo
+      // Compress the photo
+      const compressedPhoto = await manipulateAsync(
+        photo.uri,
+        [{ resize: { width: 800 } }], // Adjust the width as needed for compression
+        { compress: 0.5, format: "jpeg" } // Adjust the compression quality
+      );
+
+      console.log(compressedPhoto); // Check the compressed photo object
 
       // Location
       const getLocation = async () => {
