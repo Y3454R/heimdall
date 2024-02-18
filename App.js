@@ -18,6 +18,9 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
+            // Change the color of the tab icon to #6666FF
+            const iconColor = focused ? "#6666FF" : color;
+
             if (route.name === "Home") {
               iconName = focused ? "home" : "home-outline";
             } else if (route.name === "Capture") {
@@ -27,7 +30,7 @@ export default function App() {
             }
 
             // Return the icon component
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Ionicons name={iconName} size={size} color={iconColor} />;
           },
         })}
       >

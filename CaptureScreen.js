@@ -137,13 +137,13 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "blue",
+    backgroundColor: "#9999FF",
   },
   captureButton: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "red",
+    backgroundColor: "#6666FF",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: "black",
     backgroundColor: "transparent",
   },
   permissionText: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "blue",
+    backgroundColor: "#6666FF",
   },
   buttonText: {
     color: "white",
