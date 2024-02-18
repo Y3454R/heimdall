@@ -30,12 +30,17 @@ export default function CaptureScreen() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
+        <Text style={styles.permissionText}>
+          We need your permission to access the camera
         </Text>
-        <TouchableOpacity onPress={requestPermission} style={styles.button}>
-          <Text style={{ color: "white" }}>Grant Permission</Text>
-        </TouchableOpacity>
+        <View style={styles.permissionButtonContainer}>
+          <TouchableOpacity
+            onPress={requestPermission}
+            style={styles.permissionButton}
+          >
+            <Text style={styles.buttonText}>Grant Permission</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -149,5 +154,26 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
     backgroundColor: "transparent",
+  },
+  permissionText: {
+    textAlign: "center",
+    fontSize: 18,
+    marginBottom: 20,
+    color: "white",
+  },
+  permissionButtonContainer: {
+    alignItems: "center",
+  },
+  permissionButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 200,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "blue",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
